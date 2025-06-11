@@ -3,6 +3,7 @@ parameters:
 
 services:
     octava.job_queue.config:
+        public: true
         class: '%octava.job_queue.config.class%'
         arguments: [[]]
 
@@ -19,3 +20,10 @@ services:
             - [setTranslationDomain, ['OctavaJobQueueBundle']]
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: JobQueue }
+
+    Octava\Bundle\JobQueueBundle\Command\RunCommand:
+        parent: 'jms_job_queue.command.run'
+        tags:
+            - { name: console.command }
+        calls:
+            - [ setConfig, ['@octava.job_queue.config']]
